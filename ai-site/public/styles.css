@@ -75,6 +75,7 @@ p { margin: 0; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { text-decoration: none; color: var(--muted); font-weight: 500; font-size: 15px; }
 .nav-links a:hover { color: var(--text); }
+.nav-toggle { display: none; }
 
 /* Hero */
 .hero { padding: 72px 0 88px; position: relative; overflow: hidden; }
@@ -239,6 +240,7 @@ h1 { font-family: var(--display); font-size: clamp(38px, 6vw, 68px); font-weight
 .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
 .footer nav { display: flex; gap: 24px; }
 .footer nav a { text-decoration: none; color: var(--muted); font-size: 15px; }
+.footer nav a { display: inline-flex; align-items: center; min-height: 44px; }
 .footer nav a:hover { color: var(--text); }
 .footer small { color: var(--muted); }
 
@@ -252,7 +254,30 @@ h1 { font-family: var(--display); font-size: clamp(38px, 6vw, 68px); font-weight
 @media (max-width: 640px) {
   body { font-size: 16px; }
   .container { padding: 0 18px; }
-  .nav-links { display: none; }
+  .nav-inner { gap: 10px; }
+  .nav-cta { margin-left: auto; }
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center; flex: none;
+    width: 44px; height: 44px; padding: 0; background: none; border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); cursor: pointer;
+  }
+  .nav-toggle:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after {
+    display: block; width: 18px; height: 2px; background: currentColor; border-radius: 2px; position: relative;
+  }
+  .nav-toggle-bars::before, .nav-toggle-bars::after { content: ""; position: absolute; left: 0; }
+  .nav-toggle-bars::before { top: -6px; }
+  .nav-toggle-bars::after { top: 6px; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { top: 0; transform: rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { top: 0; transform: rotate(-45deg); }
+  /* Overlay panel under the bar: absolutely positioned so opening it never shifts layout */
+  .nav-links {
+    display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0;
+    padding: 6px 18px 12px; background: var(--bg); border-bottom: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .nav-links.is-open { display: flex; }
+  .nav-links a { display: flex; align-items: center; min-height: 44px; font-size: 16px; }
   .section { padding: 64px 0; }
   .prompt { flex-direction: column; }
   .prompt .btn { width: 100%; }

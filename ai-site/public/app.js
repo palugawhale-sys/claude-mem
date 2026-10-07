@@ -60,6 +60,11 @@
   const preview = $('#preview');
   const pvLoading = $('#pv-loading');
 
+  const validSite = (s) => s && typeof s === 'object' && !Array.isArray(s)
+    && typeof s.title === 'string' && s.title.trim() !== ''
+    && typeof s.headline === 'string'
+    && Array.isArray(s.sections) && s.sections.every((x) => typeof x === 'string');
+
   function renderPreview(site) {
     preview.style.setProperty('--accent', safeAccent(site.accent));
     $('#pv-title').textContent = site.title || 'Your Business';
@@ -88,6 +93,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
+      if (!validSite(site)) throw new Error('Unexpected response from the server. Please try again.');
       renderPreview(site);
     } catch (err) {
       msg.textContent = err.message;
@@ -104,6 +110,22 @@
       form.requestSubmit();
     });
   });
+
+  /* ---------- Mobile nav ---------- */
+  const navToggle = $('#nav-toggle');
+  const navLinks = $('#nav-links');
+
+  function setMenu(open, refocus) {
+    navToggle.setAttribute('aria-expanded', String(open));
+    navLinks.classList.toggle('is-open', open);
+    if (!open && refocus) navToggle.focus();
+  }
+  navToggle.addEventListener('click', () => setMenu(navToggle.getAttribute('aria-expanded') !== 'true'));
+  navLinks.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') setMenu(false, true);
+  });
+  window.matchMedia('(min-width: 641px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
 
   /* ---------- Examples ---------- */
   const grid = $('#examples-grid');
