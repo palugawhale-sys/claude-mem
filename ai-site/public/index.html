@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagewright – Describe your business. Get a website.</title>
+  <meta name="description" content="Pagewright turns one sentence into a complete, editable website you can publish in minutes.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="#top" aria-label="Pagewright home">
+        <span class="logo-mark" aria-hidden="true"></span>Pagewright
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary">
+        <a href="#examples">Examples</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-primary btn-sm nav-cta" href="#waitlist">Get started</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">AI website builder</p>
+          <h1>Describe your business.<br><span class="grad">Get a website.</span></h1>
+          <p class="lead">Type one sentence. Pagewright drafts the layout, copy and design, ready to edit and publish in minutes.</p>
+
+          <form class="prompt" id="prompt-form" novalidate>
+            <label class="sr-only" for="prompt-input">Describe your website</label>
+            <input id="prompt-input" name="prompt" type="text" maxlength="300" autocomplete="off"
+                   placeholder="Describe your website…" aria-describedby="prompt-msg">
+            <button class="btn btn-primary" id="prompt-btn" type="submit">Generate</button>
+          </form>
+          <p class="prompt-msg" id="prompt-msg" role="status" aria-live="polite"></p>
+
+          <div class="tries">
+            <span>Try:</span>
+            <button type="button" class="chip chip-sample" data-prompt="A cozy neighborhood bakery with fresh sourdough and weekend brunch">Bakery</button>
+            <button type="button" class="chip chip-sample" data-prompt="Portfolio for a freelance photographer based in Lisbon">Photographer portfolio</button>
+            <button type="button" class="chip chip-sample" data-prompt="Online shop selling handmade ceramic mugs">Ceramics shop</button>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Live website preview">
+          <div class="browser" id="preview" style="--accent:#6d5efc">
+            <div class="browser-bar">
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="url" id="preview-url">yoursite.pagewright.app</span>
+            </div>
+            <div class="browser-body" id="preview-body" aria-live="polite">
+              <div class="pv-nav"><b id="pv-title">Your Business</b><span></span><span></span><span></span></div>
+              <div class="pv-hero">
+                <h3 id="pv-headline">Your headline appears here</h3>
+                <div class="pv-lines"><i></i><i></i></div>
+                <span class="pv-btn"></span>
+              </div>
+              <ul class="pv-sections" id="pv-sections">
+                <li>Hero</li><li>Features</li><li>Contact</li>
+              </ul>
+              <div class="pv-loading" id="pv-loading" hidden>
+                <span class="spinner" aria-hidden="true"></span> Generating…
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">How it works</p>
+          <h2>From idea to live site in three steps</h2>
+        </header>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-n">1</span>
+            <h3>Describe</h3>
+            <p>Tell us what you do in a sentence. No templates to browse, no blank page to stare at.</p>
+          </li>
+          <li class="step">
+            <span class="step-n">2</span>
+            <h3>Generate</h3>
+            <p>Pagewright writes the copy, picks a palette and lays out the sections your business needs.</p>
+          </li>
+          <li class="step">
+            <span class="step-n">3</span>
+            <h3>Publish</h3>
+            <p>Tweak anything with a click, connect your domain and go live with one button.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section alt" id="examples">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Examples</p>
+          <h2>One sentence, one site</h2>
+          <p class="sub">Every site below started as a single prompt.</p>
+        </header>
+        <div class="chips" id="filters" role="group" aria-label="Filter examples by category"></div>
+        <div class="grid" id="examples-grid" aria-live="polite"></div>
+        <div class="state" id="examples-state" role="status"></div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Pricing</p>
+          <h2>Simple plans that grow with you</h2>
+        </header>
+        <div class="toggle" role="group" aria-label="Billing period">
+          <button type="button" class="toggle-opt is-active" data-billing="monthly" aria-pressed="true">Monthly</button>
+          <button type="button" class="toggle-opt" data-billing="yearly" aria-pressed="false">Yearly <span class="save">Save 20%</span></button>
+        </div>
+        <div class="plans" id="plans-grid"></div>
+        <div class="state" id="plans-state" role="status"></div>
+      </div>
+    </section>
+
+    <section class="section alt" id="faq">
+      <div class="container narrow">
+        <header class="section-head">
+          <p class="eyebrow">FAQ</p>
+          <h2>Questions, answered</h2>
+        </header>
+        <div class="faq">
+          <details>
+            <summary>Do I need to know how to code or design?</summary>
+            <p>No. You describe your business in plain language and edit the result visually. If you do like code, you can export clean HTML and CSS.</p>
+          </details>
+          <details>
+            <summary>Can I edit the site after it is generated?</summary>
+            <p>Yes. Every headline, image, color and section is editable, and you can reorder or add sections at any time.</p>
+          </details>
+          <details>
+            <summary>Can I use my own domain?</summary>
+            <p>Yes, on Pro and Business. Starter sites are published on a free pagewright.app subdomain.</p>
+          </details>
+          <details>
+            <summary>What happens if I cancel?</summary>
+            <p>You keep access until the end of your billing period, and you can export your site whenever you like.</p>
+          </details>
+          <details>
+            <summary>Is the generator on this page the real thing?</summary>
+            <p>It is a demo that sketches an outline from keywords. The full product writes complete copy and designs.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cta" id="waitlist">
+      <div class="container narrow">
+        <div class="cta-card">
+          <h2>Join the waitlist</h2>
+          <p>Be first in line when Pagewright opens its doors.</p>
+          <form class="wl-form" id="waitlist-form" novalidate>
+            <div class="field">
+              <label for="wl-email">Email</label>
+              <input id="wl-email" name="email" type="email" required autocomplete="email" placeholder="you@company.com">
+            </div>
+            <div class="field">
+              <label for="wl-plan">Plan</label>
+              <select id="wl-plan" name="plan">
+                <option value="starter">Starter</option>
+                <option value="pro" selected>Pro</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="wl-btn" type="submit">Join waitlist</button>
+          </form>
+          <p class="form-msg" id="wl-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"></span>Pagewright</a>
+      <nav aria-label="Footer">
+        <a href="#examples">Examples</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <small>&copy; 2026 Pagewright, a fictional company.</small>
+    </div>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
