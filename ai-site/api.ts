@@ -32,10 +32,34 @@ const CATEGORY_KEYWORDS: Array<[string, string[], string, string[]]> = [
   ["Agency", ["agency", "consulting", "consultancy", "studio", "marketing", "startup", "firm"], "#3d5a80", ["Hero", "Services", "Projects", "Process", "Contact"]],
 ];
 
+// Whole-word matcher: unicode-aware boundaries, optional simple inflection
+// (s / es / ing, and y -> ies), multi-word phrases allow any whitespace between words.
+function keywordRegex(word: string): RegExp {
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const phrase = (s: string) => s.trim().split(/\s+/).map(esc).join("\\s+");
+  const base = phrase(word);
+  const stem = /[^aeiou]y$/i.test(word.trim()) ? `(?:${phrase(word.trim().slice(0, -1))}ies|${base}s?)` : `${base}(?:s|es|ing)?`;
+  return new RegExp(`(?<![\\p{L}\\p{N}])${stem}(?![\\p{L}\\p{N}])`, "iu");
+}
+
+const CATEGORY_MATCHERS = CATEGORY_KEYWORDS.map(([, words]) => words.map(keywordRegex));
+
+function classify(prompt: string): number {
+  // Score = number of distinct keywords found; highest wins, ties go to the earliest category.
+  let best = -1;
+  let bestScore = 0;
+  CATEGORY_MATCHERS.forEach((matchers, i) => {
+    const score = matchers.reduce((n, re) => n + (re.test(prompt) ? 1 : 0), 0);
+    if (score > bestScore) {
+      best = i;
+      bestScore = score;
+    }
+  });
+  return best >= 0 ? best : CATEGORY_KEYWORDS.findIndex(([c]) => c === "Agency");
+}
+
 function generate(prompt: string) {
-  const lower = ` ${prompt.toLowerCase()} `;
-  let match = CATEGORY_KEYWORDS.find(([, words]) => words.some((w) => lower.includes(w)));
-  if (!match) match = CATEGORY_KEYWORDS.find(([c]) => c === "Agency")!;
+  const match = CATEGORY_KEYWORDS[classify(prompt)];
   const [category, , accent, sections] = match;
 
   // Title: first up-to-3 meaningful words, title-cased.

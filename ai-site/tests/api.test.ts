@@ -140,6 +140,20 @@ describe("POST /api/generate", () => {
     expect((await gen("gym event")).body.category).toBe("Fitness");
     expect((await gen("event agency")).body.category).toBe("Event");
   });
+  test("every example prompt round-trips to its own category", async () => {
+    const { examples } = await import("../data/examples");
+    for (const e of examples) {
+      expect((await gen(e.prompt)).body.category).toBe(e.category);
+    }
+  });
+  test("whole-word matching: 'restore' is not 'store'; plurals/stems still match", async () => {
+    expect((await gen("We restore antique furniture")).body.category).toBe("Agency");
+    expect((await gen("Local bakeries guide")).body.category).toBe("Restaurant");
+    expect((await gen("Personal coaching")).body.category).toBe("Fitness");
+  });
+  test("more keyword hits beat earlier category order", async () => {
+    expect((await gen("a shop selling handmade products with a menu")).body.category).toBe("Shop");
+  });
   test("no keywords falls back to Agency", async () => {
     expect((await gen("zzz qqq")).body.category).toBe("Agency");
   });
